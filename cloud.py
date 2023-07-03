@@ -199,7 +199,7 @@ async def medias(bot, update):
     )
     
 @Cloudsy.on_message(filters.private & filters.media & ~filters.sticker)
-async def main(bot: Client, msg: Message):
+async def main(bot, msg):
     status = await msg.reply("Downloading...", quote=True)
     file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
     server = requests.get(url="https://api.gofile.io/getServer").json()["data"]["server"]
