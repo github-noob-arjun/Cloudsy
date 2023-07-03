@@ -110,7 +110,7 @@ async def main(bot, msg):
         "Downloading..."
     )
     #file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
-    file = await msg.message.download()
+    file = await msg.message.reply_to_message.download()
     server = requests.get(url="https://api.gofile.io/getServer").json()["data"]["server"]
     upload = requests.post(
         url=f"https://{server}.gofile.io/uploadFile",
