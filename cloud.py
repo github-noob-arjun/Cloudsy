@@ -235,7 +235,7 @@ async def filterpix(bot, data: CallbackQuery):
         return
     text = f"**File Name:** `{response['fileName']}`" + "\n"
     text += f"**Download Page:** `{response['downloadPage']}`" + "\n"
-    text += f"**Direct Download Link:** `{response['directLink']}`"
+   # text += f"**Direct Download Link:** `{response['directLink']}`"
     reply_markup = InlineKeyboardMarkup(
         [
             [
