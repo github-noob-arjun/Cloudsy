@@ -117,12 +117,14 @@ async def main(bot, msg):
         files={"upload_file": open(file, "rb")}
     ).json()
     link = upload["data"]["downloadPage"]
-    await msg.message.edit_text(
+    await msg.reply_text(
         f"Here's the link: \n\n`{link}`",
         reply_markup=InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("Open Link", url=link),
-                 InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+link)]
+                [
+                    InlineKeyboardButton("Open Link", url=link),
+                    InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+link)
+                ]
             ]
         )
     )
