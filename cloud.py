@@ -88,7 +88,7 @@ async def start(bot, update):
     )
 
     
-#@Cloudsy.on_message(filters.private & filters.media)
+@Cloudsy.on_message(filters.private & filters.media)
 async def medias(bot, update):
     await update.reply_text(
         "Choose a Cloud Server for Uploading",
