@@ -104,26 +104,27 @@ async def medias(bot, update):
         quote=True
     )
     
-@Cloudsy.on_message(filters.private & filters.media)
+@Cloudsy.on_callback_query(filters.regex(r"gofile"))
 async def main(bot, msg):
-    status = await msg.reply_text(
-        "Downloading...",
-        parse_mode="Markdown",
-        quote=True
+    status = await msg.message.edit_text(
+        "Downloading..."
     )
     #file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
-    file = await msg.download()
+    file = await msg.message.download()
     server = requests.get(url="https://api.gofile.io/getServer").json()["data"]["server"]
     upload = requests.post(
         url=f"https://{server}.gofile.io/uploadFile",
         files={"upload_file": open(file, "rb")}
     ).json()
     link = upload["data"]["downloadPage"]
-    await msg.reply_text(
-        f"Here's the link: \n\n{link}",
-        parse_mode="Markdown",
-        quote=True,
-        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+link)]])
+    await msg.message.edit_text(
+        f"Here's the link: \n\n`{link}`",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [InlineKeyboardButton("Open Link", url=link),
+                 InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+link)]
+                ]
+        )
     )
     await status.delete()
     os.remove(file)
