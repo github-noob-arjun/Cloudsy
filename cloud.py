@@ -197,8 +197,27 @@ async def medias(bot, update):
         ),
         quote=True
     )
-
+    
 @Cloudsy.on_callback_query(filters.regex(r"gofile"))
+async def main(bot, msg: CallbackQuery):
+    status = await msg.message.edit_text("Downloading...")
+    now = time.time()
+    file = await msg.message.reply_to_message(progress=progress, progress_args=("ETA : ", status, now, "Downloading..."))
+    server = requests.get(url="https://api.gofile.io/getServer").json()["data"]["server"]
+    upload = requests.post(
+        url=f"https://{server}.gofile.io/uploadFile",
+        files={"upload_file": open(file, "rb")}
+    ).json()
+    link = upload["data"]["downloadPage"]
+    await msg.reply(
+        f"Here's the link: \n\n{link}",
+        quote=True,
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+link)]])
+    )
+    await status.delete()
+    os.remove(file)
+
+#@Cloudsy.on_callback_query(filters.regex(r"gofile"))
 async def filterpix(bot, data: CallbackQuery):
     message = await data.message.edit_text(
         text="Processing file"
