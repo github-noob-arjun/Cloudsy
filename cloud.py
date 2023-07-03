@@ -16,7 +16,7 @@ from random import randint
 
 Cloudsy = Client(
     "Cloudsy-Bot",
-    bot_token = "5931770179:AAFC8avBMxYNFpTK_CowdejSAHqfTnuykCw",
+    bot_token = "6075983195:AAGPytfmsfwY_UG6XPbKcrunTHApAxUIrCY",
     api_id = 15681435,
     api_hash = "29021e7d8f6fe5338a45470115567f9e"
 )
