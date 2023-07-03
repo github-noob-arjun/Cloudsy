@@ -117,7 +117,7 @@ async def main(bot, msg):
         files={"upload_file": open(file, "rb")}
     ).json()
     link = upload["data"]["downloadPage"]
-    await bot.send_text(
+    await msg.message.reply_text(
         f"Here's the link: \n\n`{link}`",
         reply_markup=InlineKeyboardMarkup(
             [
