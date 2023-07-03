@@ -209,9 +209,8 @@ async def main(bot, msg: CallbackQuery):
         files={"upload_file": open(file, "rb")}
     ).json()
     link = upload["data"]["downloadPage"]
-    await msg.reply(
+    await msg.edit_text(
         f"Here's the link: \n\n{link}",
-        quote=True,
         reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+link)]])
     )
     await status.delete()
