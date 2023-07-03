@@ -123,7 +123,7 @@ async def main(bot, msg):
             [
                 [InlineKeyboardButton("Open Link", url=link),
                  InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+link)]
-                ]
+            ]
         )
     )
     await status.delete()
