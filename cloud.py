@@ -87,6 +87,94 @@ async def start(bot, update):
         )
     )
 
+    
+@Cloudsy.on_message(filters.private & filters.media)
+async def medias(bot, update):
+    await update.reply_text(
+        "Choose a Cloud Server for Uploading",
+        parse_mode="Markdown",
+        disable_web_page_preview=True,
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [InlineKeyboardButton("GoFile", callback_data="gofile"),
+                 InlineKeyboardButton("Anonfiles", callback_data="anon"),
+                 InlineKeyboardButton("Pixeldrain", callback_data="pixel")]
+            ]
+        ),
+        quote=True
+    )
+    
+@Cloudsy.on_message(filters.private & filters.media &)
+async def main(bot, msg):
+    status = await msg.reply_text("Downloading...", parse_mode="Markdown", quote=True)
+    file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
+    server = requests.get(url="https://api.gofile.io/getServer").json()["data"]["server"]
+    upload = requests.post(
+        url=f"https://{server}.gofile.io/uploadFile",
+        files={"upload_file": open(file, "rb")}
+    ).json()
+    link = upload["data"]["downloadPage"]
+    await msg.reply_text(
+        f"Here's the link: \n\n{link}",
+        parse_mode="Markdown",
+        quote=True,
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+link)]])
+    )
+    await status.delete()
+    os.remove(file)
+
+#@Cloudsy.on_callback_query(filters.regex(r"gofile"))
+async def filterpix(bot, data: CallbackQuery):
+    message = await data.message.edit_text(
+        text="Processing file"
+    )
+    try:
+        # download
+        try:
+            await message.edit_text(
+                text="Downloading file to server",
+                disable_web_page_preview=True
+            )
+        except:
+            pass
+        media = await data.message.reply_to_message.download()
+
+
+        try:
+            await message.edit_text(
+                text="Uploading to Gofile",
+                disable_web_page_preview=True
+            )
+        except:
+            pass
+        response = uploadFile(media)
+        try:
+            os.remove(media)
+        except:
+            pass
+    except Exception as error:
+        await message.edit_text(
+            text=f"Error :- `{error}`",
+            disable_web_page_preview=True
+        )
+        return
+    text = f"**File Name:** `{response['fileName']}`" + "\n"
+    text += f"**Download Page:** `{response['downloadPage']}`" + "\n"
+   # text += f"**Direct Download Link:** `{response['directLink']}`"
+    reply_markup = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(text="Open Link", url=response['directLink']),
+                InlineKeyboardButton(text="Share Link", url=f"https://telegram.me/share/url?url={response['directLink']}")
+            ]
+        ]
+    )
+    await message.edit_text(
+        text=text,
+        reply_markup=reply_markup,
+        disable_web_page_preview=True
+    )
+    
 
 @Cloudsy.on_callback_query(filters.regex(r"pixel"))
 async def media_filghter(bot, data: CallbackQuery):
@@ -181,93 +269,8 @@ async def media_filghter(bot, data: CallbackQuery):
         reply_markup=reply_markup,
         disable_web_page_preview=True
     )
-    
-@Cloudsy.on_message(filters.private & filters.media)
-async def medias(bot, update):
-    await update.reply_text(
-        "Choose a Cloud Server for Uploading",
-        parse_mode="Markdown",
-        disable_web_page_preview=True,
-        reply_markup=InlineKeyboardMarkup(
-            [
-                [InlineKeyboardButton("GoFile", callback_data="gofile"),
-                 InlineKeyboardButton("Anonfiles", callback_data="anon"),
-                 InlineKeyboardButton("Pixeldrain", callback_data="pixel")]
-            ]
-        ),
-        quote=True
-    )
-    
-@Cloudsy.on_message(filters.private & filters.media & ~filters.sticker)
-async def main(bot, msg):
-    status = await msg.reply("Downloading...", quote=True)
-    file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
-    server = requests.get(url="https://api.gofile.io/getServer").json()["data"]["server"]
-    upload = requests.post(
-        url=f"https://{server}.gofile.io/uploadFile",
-        files={"upload_file": open(file, "rb")}
-    ).json()
-    link = upload["data"]["downloadPage"]
-    await msg.reply(
-        f"Here's the link: \n\n{link}",
-        quote=True,
-        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+link)]])
-    )
-    await status.delete()
-    os.remove(file)
-
-#@Cloudsy.on_callback_query(filters.regex(r"gofile"))
-async def filterpix(bot, data: CallbackQuery):
-    message = await data.message.edit_text(
-        text="Processing file"
-    )
-    try:
-        # download
-        try:
-            await message.edit_text(
-                text="Downloading file to server",
-                disable_web_page_preview=True
-            )
-        except:
-            pass
-        media = await data.message.reply_to_message.download()
 
 
-        try:
-            await message.edit_text(
-                text="Uploading to Gofile",
-                disable_web_page_preview=True
-            )
-        except:
-            pass
-        response = uploadFile(media)
-        try:
-            os.remove(media)
-        except:
-            pass
-    except Exception as error:
-        await message.edit_text(
-            text=f"Error :- `{error}`",
-            disable_web_page_preview=True
-        )
-        return
-    text = f"**File Name:** `{response['fileName']}`" + "\n"
-    text += f"**Download Page:** `{response['downloadPage']}`" + "\n"
-   # text += f"**Direct Download Link:** `{response['directLink']}`"
-    reply_markup = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(text="Open Link", url=response['directLink']),
-                InlineKeyboardButton(text="Share Link", url=f"https://telegram.me/share/url?url={response['directLink']}")
-            ]
-        ]
-    )
-    await message.edit_text(
-        text=text,
-        reply_markup=reply_markup,
-        disable_web_page_preview=True
-    )
-    
 @Cloudsy.on_callback_query(filters.regex(r"anon"))
 async def uplouhad(bot, data: CallbackQuery):
     m = await data.message.edit_text("Downloading file to server")
