@@ -88,7 +88,7 @@ async def start(bot, update):
     )
 
     
-@Cloudsy.on_message(filters.private & filters.media)
+#@Cloudsy.on_message(filters.private & filters.media)
 async def medias(bot, update):
     await update.reply_text(
         "Choose a Cloud Server for Uploading",
@@ -106,7 +106,11 @@ async def medias(bot, update):
     
 @Cloudsy.on_message(filters.private & filters.media)
 async def main(bot, msg):
-    status = await msg.reply_text("Downloading...", parse_mode="Markdown", quote=True)
+    status = await msg.reply_text(
+        "Downloading...",
+        parse_mode="Markdown",
+        quote=True
+    )
     file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
     server = requests.get(url="https://api.gofile.io/getServer").json()["data"]["server"]
     upload = requests.post(
