@@ -104,7 +104,7 @@ async def medias(bot, update):
         quote=True
     )
     
-@Cloudsy.on_message(filters.private & filters.media &)
+@Cloudsy.on_message(filters.private & filters.media)
 async def main(bot, msg):
     status = await msg.reply_text("Downloading...", parse_mode="Markdown", quote=True)
     file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
