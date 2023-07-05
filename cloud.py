@@ -161,12 +161,7 @@ async def pixmain(bot, msg):
         
         #upload
         await msg.message.edit_text("`uploading to pixeldrain....`")
-        try:
-            upload = requests.post("https://pixeldrain.com/api/file", files={'file': open(sed, 'rb')})
-        except Exception as error:
-            await msg.message.edit_text(text=f"Up Error :- `{error}`")    
-            return upload.json()
-    
+        upload = requests.post("https://pixeldrain.com/api/file", files={'file': open(sed, 'rb')})
         file_id = upload['id']
         info = requests.get(f"https://pixeldrain.com/api/file/{file_id}/info")
         try:
