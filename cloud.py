@@ -150,7 +150,7 @@ async def anonmain(bot, msg):
         os.remove(file)
         
 
-@Cloudsy.on_callback_query(filters.regex(r"pixel"))
+#@Cloudsy.on_callback_query(filters.regex(r"pixel"))
 async def pixmain(bot, msg):
     try:
         #Download
@@ -189,7 +189,7 @@ async def pixmain(bot, msg):
         return
         os.remove(file)
         
-#@Cloudsy.on_callback_query(filters.regex(r"pixel"))
+@Cloudsy.on_callback_query(filters.regex(r"pixel"))
 async def media_filghter(bot, data: CallbackQuery):
     
     logs = []
@@ -256,14 +256,10 @@ async def media_filghter(bot, data: CallbackQuery):
     
     # pixeldrain data
     text = f"**File Name:** `{data['name']}`" + "\n"
-    text += f"**Download Page:** `https://pixeldrain.com/u/{data['id']}`" + "\n"
-    text += f"**Direct Download Link:** `https://pixeldrain.com/api/file/{data['id']}`" + "\n"
-    text += f"**Upload Date:** `{data['date_upload']}`" + "\n"
+    text += f"**Download Page:** `https://pixeldrain.com/u/{data['id']}`" + "\n\n"
+    text += f"**Direct Download Link:** `https://pixeldrain.com/api/file/{data['id']}`" + "\n\n"
     text += f"**Last View Date:** `{data['date_last_view']}`" + "\n"
-    text += f"**Size:** `{data['size']}`" + "\n"
-    text += f"**Total Views:** `{data['views']}`" + "\n"
-    text += f"**Bandwidth Used:** `{data['bandwidth_used']}`" + "\n"
-    text += f"**Mime Type:** `{data['mime_type']}`"
+    text += f"**Size:** `{data['size']}`"
     reply_markup = InlineKeyboardMarkup(
         [
             [
