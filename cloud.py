@@ -109,7 +109,7 @@ async def main(bot, msg):
         )
     except Exception as error:
         await msg.message.edit_text(
-            text=f"Error :- `{error}`"+"\n\n"+'\n'.join(logs),
+            text=f"Error :- `{error}`",
             disable_web_page_preview=True
         )
         return
@@ -233,7 +233,7 @@ async def main(bot, msg):
         )
     except Exception as error:
         await msg.message.edit_text(
-            text=f"Error :- `{error}`"+"\n\n"+'\n'.join(logs),
+            text=f"Error :- `{error}`",
             disable_web_page_preview=True
         )
         return
