@@ -162,7 +162,13 @@ async def pixmain(bot, msg):
         
         #upload
         await msg.message.edit_text("`uploading to pixeldrain....`")
-        upload = requests.post("https://pixeldrain.com/api/file", files=files)
+        upload = requests.post(
+            "https://pixeldrain.com/api/file",
+            data={"anonymous": True},
+            files={"file": open(files, "rb")}
+        )
+        return response.json()
+    
         file_id = upload['id']
         data = requests.get(f"https://pixeldrain.com/api/file/{file_id}/info")
         Fname = data['name']
