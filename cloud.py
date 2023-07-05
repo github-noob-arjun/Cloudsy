@@ -187,11 +187,8 @@ async def pixmain(bot, msg):
                     ]
                 )
             )
-            except Exception as error:
-                await msg.message.edit_text(
-                    text=f"Error :- `{error}`",
-                    disable_web_page_preview=True
-                )
+        except Exception as error:
+            await msg.message.edit_text(text=f"Error :- `{error}`")
     except Exception as error:
         await msg.message.edit_text(
             text=f"Error :- `{error}`",
