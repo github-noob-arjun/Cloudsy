@@ -168,14 +168,15 @@ async def pixmain(bot, msg):
                 data={"anonymous": True}
             )
         except Exception as error:
-            await msg.message.edit_text(text=f"Error :- `{error}`")    
+            await msg.message.edit_text(text=f"Up Error :- `{error}`")    
             return upload.json()
     
         file_id = upload['id']
         try:
             data = requests.get(f"https://pixeldrain.com/api/file/{file_id}/info")
         except Exception as error:
-            await msg.message.edit_text(text=f"Error :- `{error}`")
+            await msg.message.edit_text(text=f"in Error :- `{error}`")
+            return info.json()
         Fname = data['name']
         Fsize = data['size']
         link = data['id']
