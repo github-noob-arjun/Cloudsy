@@ -154,7 +154,7 @@ async def anonmain(bot, msg):
 async def media_filghter(bot, update: CallbackQuery):
     
     logs = []
-    message = await update.message.reply_text(
+    message = await update.message.edit_text(
         text="`Processing...`",
         quote=True,
         disable_web_page_preview=True
@@ -162,6 +162,7 @@ async def media_filghter(bot, update: CallbackQuery):
     
     try:
         # download
+        now = time.time()
         try:
             await message.edit_text(
                 text="`Downloading...`",
@@ -169,7 +170,9 @@ async def media_filghter(bot, update: CallbackQuery):
             )
         except:
             pass
-        media = await update.message.reply_to_message.download()
+        #media = await update.message.reply_to_message.download()
+        sed = await bot.download_media(update.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", message, now))
+        media = {'file': open(sed, 'rb')}
         logs.append("Download Successfully")
         
         # upload
