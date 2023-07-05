@@ -215,11 +215,6 @@ async def media_filghter(bot, update: CallbackQuery):
         )
         return
     
-    # pixeldrain data
-    text = f"**File Name:** `{data['name']}`" + "\n"
-    text += f"**Download Page:** `https://pixeldrain.com/u/{data['id']}`" + "\n"
-    text += f"**Direct Download Link:** `https://pixeldrain.com/api/file/{data['id']}`" + "\n"
-    text += f"**Size:** `{data['size']}`"
     reply_markup = InlineKeyboardMarkup(
         [
             [
@@ -239,7 +234,7 @@ async def media_filghter(bot, update: CallbackQuery):
     )
     
     await message.edit_text(
-        text=text,
+        text=f"**Upload Successfully ☑️\n\nFile : {data['name']}\n\n💽 Size : {data['size']}\n\nDownload Page : `https://pixeldrain.com/u/{data['id']}`\n\nDirect Download: `https://pixeldrain.com/api/file/{data['id']}`**",,
         reply_markup=reply_markup,
         disable_web_page_preview=True
     )
