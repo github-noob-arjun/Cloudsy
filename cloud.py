@@ -158,14 +158,15 @@ async def pixmain(bot, msg):
         
         #Download
         sed = await bot.download_media(msg.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", status, now))
-        files = {'file': open(sed, 'rb')}
+        #files = {'file': open(sed, 'rb')}
         
         #upload
         await msg.message.edit_text("`uploading to pixeldrain....`")
         try:
             upload = requests.post(
                 "https://pixeldrain.com/api/file",
-                data={"anonymous": True}
+                datas={"anonymous": True},
+                file={"file": open(sed, "rb")}
             )
         except Exception as error:
             await msg.message.edit_text(text=f"Up Error :- `{error}`")    
