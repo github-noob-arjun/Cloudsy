@@ -167,13 +167,8 @@ async def pixmain(bot, msg):
             await msg.message.edit_text(text=f"Up Error :- `{error}`")    
             return upload.json()
     
-        try:
-            file_id = upload['id']
-            info = requests.get(f"https://pixeldrain.com/api/file/{file_id}/info")
-        except Exception as error:
-            await msg.message.edit_text(text=f"in Error :- `{error}`")
-            return info.json()
-
+        file_id = upload['id']
+        info = requests.get(f"https://pixeldrain.com/api/file/{file_id}/info")
         try:
             data = info(response["id"])
             Fname = data['name']
