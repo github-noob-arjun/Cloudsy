@@ -167,7 +167,7 @@ async def pixmain(bot, msg):
             data={"anonymous": True},
             files={"file": open(files, "rb")}
         )
-        return response.json()
+        return upload.json()
     
         file_id = upload['id']
         data = requests.get(f"https://pixeldrain.com/api/file/{file_id}/info")
