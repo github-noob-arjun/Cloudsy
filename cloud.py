@@ -92,12 +92,12 @@ async def main(bot, msg):
         status = await msg.message.edit_text("Downloading...")
         now = time.time()
         sed = await bot.download_media(msg.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", status, now))
-        file = {'file': open(sed, 'rb')}
+        files = {'file': open(sed, 'rb')}
         server = requests.get(url="https://api.gofile.io/getServer").json()["data"]["server"]
         await msg.message.edit_text("`uploading to Gofile.io...`")
         upload = requests.post(
             url=f"https://{server}.gofile.io/uploadFile",
-            files={"upload_file": open(file, "rb")}
+            files=files
         ).json()
         link = upload["data"]["downloadPage"]
         await msg.message.edit_text(
