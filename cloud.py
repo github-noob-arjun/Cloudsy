@@ -154,7 +154,7 @@ async def anonmain(bot, msg):
 async def media_filghter(bot, data: CallbackQuery):
     
     logs = []
-    message = await update.reply_text(
+    message = await update.message.reply_text(
         text="`Processing...`",
         quote=True,
         disable_web_page_preview=True
@@ -169,7 +169,7 @@ async def media_filghter(bot, data: CallbackQuery):
             )
         except:
             pass
-        media = await update.download()
+        media = await update.message.reply_to_message.download()
         logs.append("Download Successfully")
         
         # upload
@@ -219,12 +219,7 @@ async def media_filghter(bot, data: CallbackQuery):
     text = f"**File Name:** `{data['name']}`" + "\n"
     text += f"**Download Page:** `https://pixeldrain.com/u/{data['id']}`" + "\n"
     text += f"**Direct Download Link:** `https://pixeldrain.com/api/file/{data['id']}`" + "\n"
-    text += f"**Upload Date:** `{data['date_upload']}`" + "\n"
-    text += f"**Last View Date:** `{data['date_last_view']}`" + "\n"
-    text += f"**Size:** `{data['size']}`" + "\n"
-    text += f"**Total Views:** `{data['views']}`" + "\n"
-    text += f"**Bandwidth Used:** `{data['bandwidth_used']}`" + "\n"
-    text += f"**Mime Type:** `{data['mime_type']}`"
+    text += f"**Size:** `{data['size']}`"
     reply_markup = InlineKeyboardMarkup(
         [
             [
