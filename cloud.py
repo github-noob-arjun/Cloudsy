@@ -177,7 +177,7 @@ async def pixmain(bot, msg):
             f"Upload Successfully ☑️\n\nFile : {Fname}\n\n💽 Size : {Fsize}\n\nHere's the link: `https://pixeldrain.com/api/file/{link}`",
             reply_markup=InlineKeyboardMarkup(
                 [
-                    [InlineKeyboardButton("Open Link", url=f"https://pixeldrain.com/api/file/{Link}"),
+                    [InlineKeyboardButton("Open Link", url=f"https://pixeldrain.com/api/file/{link}"),
                      InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+f"https://pixeldrain.com/api/file/{link}")]
                 ]
             )
