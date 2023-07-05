@@ -167,12 +167,13 @@ async def pixmain(bot, msg):
         data = requests.get(f"https://pixeldrain.com/api/file/{file_id}/info")
         Fname = data['name']
         Fsize = data['size']
+        link = data['id']
         await msg.message.edit_text(
-            f"Upload Successfully ☑️\n\nFile : {Fname}\n\n💽 Size : {Fsize}\n\nHere's the link: `https://pixeldrain.com/api/file/{data['id']}`",
+            f"Upload Successfully ☑️\n\nFile : {Fname}\n\n💽 Size : {Fsize}\n\nHere's the link: `https://pixeldrain.com/api/file/{link}`",
             reply_markup=InlineKeyboardMarkup(
                 [
-                    [InlineKeyboardButton("Open Link", url=f"https://pixeldrain.com/api/file/{data['id']}"),
-                     InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+f"https://pixeldrain.com/api/file/{data['id']}")]
+                    [InlineKeyboardButton("Open Link", url=f"https://pixeldrain.com/api/file/{Link}"),
+                     InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+f"https://pixeldrain.com/api/file/{link}")]
                 ]
             )
         )
