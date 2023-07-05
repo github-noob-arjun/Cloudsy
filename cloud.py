@@ -116,6 +116,35 @@ async def main(bot, msg):
         os.remove(file)
 
 
+@Cloudsy.on_callback_query(filters.regex(r"anon"))
+async def main(bot, msg):
+    try:
+        status = await msg.message.edit_text("Downloading...")
+        #file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
+        sed = await bot.download_media(msg.message.reply_to_message)
+        files = {'file': open(sed, 'rb')}
+        upload = requests.post("https://api.anonfiles.com/upload", files=files)
+        text = upload.json()
+        Fname = text['data']['file']['metadata']['name']
+        Flink = text['data']['file']['url']['full']
+        await msg.message.edit_text(
+            f"Upload Successfully ☑️\n\nFile : {Fname}\n\nHere's the link: `{Flink}`",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton("Open Link", url=Flink),
+                     InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+Flink)]
+                ]
+            )
+        )
+    except Exception as error:
+        await msg.message.edit_text(
+            text=f"Error :- `{error}`",
+            disable_web_page_preview=True
+        )
+        return
+        os.remove(file)
+
+
 @Cloudsy.on_callback_query(filters.regex(r"pixel"))
 async def media_filghter(bot, data: CallbackQuery):
     
@@ -209,35 +238,6 @@ async def media_filghter(bot, data: CallbackQuery):
         reply_markup=reply_markup,
         disable_web_page_preview=True
     )
-
-
-
-@Cloudsy.on_callback_query(filters.regex(r"anon"))
-async def main(bot, msg):
-    try:
-        status = await msg.message.edit_text("Downloading...")
-        #file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
-        file = await bot.download_media(msg.message.reply_to_message)
-        upload = requests.post("https://api.anonfiles.com/upload", files=file)
-        text = upload.json()
-        Fname = text['data']['file']['metadata']['name']
-        Flink = text['data']['file']['url']['full']
-        await msg.message.edit_text(
-            f"Upload Successfully ☑️\n\nFile : {Fname}\n\nHere's the link: `{Flink}`",
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [InlineKeyboardButton("Open Link", url=Flink),
-                     InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+Flink)]
-                ]
-            )
-        )
-    except Exception as error:
-        await msg.message.edit_text(
-            text=f"Error :- `{error}`",
-            disable_web_page_preview=True
-        )
-        return
-        os.remove(file)
 
 
 #@Cloudsy.on_callback_query(filters.regex(r"anon"))
