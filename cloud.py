@@ -87,7 +87,7 @@ async def medias(bot, update):
 
 
 @Cloudsy.on_callback_query(filters.regex(r"gofile"))
-async def main(bot, msg):
+async def gomain(bot, msg):
     try:
         status = await msg.message.edit_text("Downloading...")
         now = time.time()
@@ -119,7 +119,7 @@ async def main(bot, msg):
 
 
 @Cloudsy.on_callback_query(filters.regex(r"anon"))
-async def main(bot, msg):
+async def anonmain(bot, msg):
     try:
         status = await msg.message.edit_text("Downloading...")
         now = time.time()
@@ -148,26 +148,28 @@ async def main(bot, msg):
         )
         return
         os.remove(file)
-
+        
 
 @Cloudsy.on_callback_query(filters.regex(r"pixel"))
 async def media_filghter(bot, data: CallbackQuery):
     
     logs = []
-    message = await data.message.edit_text(
+    now = time.time()
+    await data.message.edit_text(
         text="Processing file"
     )
     
     try:
         # download
         try:
-            await message.edit_text(
+            message = await message.edit_text(
                 text="Downloading file to server",
                 disable_web_page_preview=True
             )
         except:
             pass
-        media = await data.message.reply_to_message.download()
+        sed = await bot.download_media(data.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", message, now))
+        media = {'file': open(sed, 'rb')}
         logs.append("Download Successfully")
         
         # upload
