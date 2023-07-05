@@ -162,7 +162,7 @@ async def media_filghter(bot, data: CallbackQuery):
     try:
         # download
         try:
-            message = await message.edit_text(
+            message = await data.message.edit_text(
                 text="Downloading file to server",
                 disable_web_page_preview=True
             )
