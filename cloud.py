@@ -169,8 +169,7 @@ async def media_filghter(bot, update: CallbackQuery):
         except:
             pass
         #media = await update.message.reply_to_message.download()
-        sed = await bot.download_media(update.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", message, now))
-        media = {'file': open(sed, 'rb')}
+        media = await bot.download_media(update.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", message, now))
         logs.append("Download Successfully")
         
         # upload
