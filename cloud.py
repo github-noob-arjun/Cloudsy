@@ -149,72 +149,33 @@ async def anonmain(bot, msg):
         return
         os.remove(file)
         
-
-#@Cloudsy.on_callback_query(filters.regex(r"pixel"))
-async def pixmain(bot, msg):
-    try:
-        #Download
-        status = await msg.message.edit_text("Downloading...")
-        now = time.time()
-        sed = await bot.download_media(msg.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", status, now))
-        #files = {'file': open(sed, 'rb')}
-        
-        #upload
-        await msg.message.edit_text("`uploading to pixeldrain....`")
-        media = requests.post("https://pixeldrain.com/api/file", files={'file': open(sed, 'rb')})
-        upload = {'file': open(media, 'rb')}
-        file_id = upload['id']
-        info = requests.get(f"https://pixeldrain.com/api/file/{file_id}/info")
-        try:
-            data = info(response["id"])
-            Fname = data['name']
-            Fsize = data['size']
-            link = data['id']
-            await msg.message.edit_text(
-                f"Upload Successfully ☑️\n\nFile : {Fname}\n\n💽 Size : {Fsize}\n\nHere's the link: `https://pixeldrain.com/api/file/{link}`",
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [InlineKeyboardButton("Open Link", url=f"https://pixeldrain.com/api/file/{link}"),
-                         InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+f"https://pixeldrain.com/api/file/{link}")]
-                    ]
-                )
-            )
-        except Exception as error:
-            await msg.message.edit_text(text=f"Error :- `{error}`")
-    except Exception as error:
-        await msg.message.edit_text(
-            text=f"Error :- `{error}`",
-            disable_web_page_preview=True
-        )
-        return
-        os.remove(file)
         
 @Cloudsy.on_callback_query(filters.regex(r"pixel"))
 async def media_filghter(bot, data: CallbackQuery):
     
     logs = []
-    now = time.time()
-    await data.message.edit_text(
-        text="Processing file"
+    message = await update.reply_text(
+        text="`Processing...`",
+        quote=True,
+        disable_web_page_preview=True
     )
     
     try:
         # download
         try:
-            message = await data.message.edit_text(
-                text="Downloading file to server",
+            await message.edit_text(
+                text="`Downloading...`",
                 disable_web_page_preview=True
             )
         except:
             pass
-        sed = await bot.download_media(data.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", message, now))
-        media = {'file': open(sed, 'rb')}
+        media = await update.download()
         logs.append("Download Successfully")
         
         # upload
         try:
             await message.edit_text(
-                text="Uploading to Pixeldrain",
+                text="`Uploading...`",
                 disable_web_page_preview=True
             )
         except:
@@ -227,7 +188,7 @@ async def media_filghter(bot, data: CallbackQuery):
             pass
         try:
             await message.edit_text(
-                text="Uploaded Successfully",
+                text="`Uploaded Successfully!`",
                 disable_web_page_preview=True
             )
         except:
@@ -256,10 +217,14 @@ async def media_filghter(bot, data: CallbackQuery):
     
     # pixeldrain data
     text = f"**File Name:** `{data['name']}`" + "\n"
-    text += f"**Download Page:** `https://pixeldrain.com/u/{data['id']}`" + "\n\n"
-    text += f"**Direct Download Link:** `https://pixeldrain.com/api/file/{data['id']}`" + "\n\n"
+    text += f"**Download Page:** `https://pixeldrain.com/u/{data['id']}`" + "\n"
+    text += f"**Direct Download Link:** `https://pixeldrain.com/api/file/{data['id']}`" + "\n"
+    text += f"**Upload Date:** `{data['date_upload']}`" + "\n"
     text += f"**Last View Date:** `{data['date_last_view']}`" + "\n"
-    text += f"**Size:** `{data['size']}`"
+    text += f"**Size:** `{data['size']}`" + "\n"
+    text += f"**Total Views:** `{data['views']}`" + "\n"
+    text += f"**Bandwidth Used:** `{data['bandwidth_used']}`" + "\n"
+    text += f"**Mime Type:** `{data['mime_type']}`"
     reply_markup = InlineKeyboardMarkup(
         [
             [
@@ -271,6 +236,9 @@ async def media_filghter(bot, data: CallbackQuery):
                     text="Share Link",
                     url=f"https://telegram.me/share/url?url=https://pixeldrain.com/u/{data['id']}"
                 )
+            ],
+            [
+                InlineKeyboardButton(text="Join Updates Channel", url="https://telegram.me/FayasNoushad")
             ]
         ]
     )
@@ -280,6 +248,5 @@ async def media_filghter(bot, data: CallbackQuery):
         reply_markup=reply_markup,
         disable_web_page_preview=True
     )
-
 
 Cloudsy.run()
