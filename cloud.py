@@ -220,10 +220,10 @@ async def main(bot, msg):
         file = await msg.message.reply_to_message.download()
         upload = requests.post("https://api.anonfiles.com/upload", files=file)
         text = upload.json()
-        Fname = text['data']['file']['metadata']['name']
+        #Fname = text['data']['file']['metadata']['name']
         Flink = text['data']['file']['url']['full']
         await msg.message.edit_text(
-            f"Upload Successfully ☑️\n\nFile : {Fname}\n\nHere's the link: `{Flink}`",
+            f"Upload Successfully ☑️\n\nFile : Fname\n\nHere's the link: `{Flink}`",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [InlineKeyboardButton("Open Link", url=Flink),
