@@ -158,14 +158,13 @@ async def pixmain(bot, msg):
         
         #Download
         sed = await bot.download_media(msg.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", status, now))
-        #files = {'file': open(sed, 'rb')}
+        files = {'file': open(sed, 'rb')}
         
         #upload
         await msg.message.edit_text("`uploading to pixeldrain....`")
         upload = requests.post(
             "https://pixeldrain.com/api/file",
-            data={"anonymous": True},
-            files={"file": open(sed, "rb")}
+            data={"anonymous": True}
         )
         return upload.json()
     
