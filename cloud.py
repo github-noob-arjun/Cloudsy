@@ -122,7 +122,7 @@ async def main(bot, msg):
         status = await msg.message.edit_text("Downloading...")
         now = time.time()
         #file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
-        sed = await bot.download_media(msg.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", status, now)
+        sed = await bot.download_media(msg.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", status, now))
         files = {'file': open(sed, 'rb')}
         upload = requests.post("https://api.anonfiles.com/upload", files=files)
         text = upload.json()
