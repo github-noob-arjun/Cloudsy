@@ -94,6 +94,7 @@ async def main(bot, msg):
         sed = await bot.download_media(msg.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", status, now))
         file = {'file': open(sed, 'rb')}
         server = requests.get(url="https://api.gofile.io/getServer").json()["data"]["server"]
+        await msg.message.edit_text("`uploading to Gofile.io...`")
         upload = requests.post(
             url=f"https://{server}.gofile.io/uploadFile",
             files={"upload_file": open(file, "rb")}
@@ -125,6 +126,7 @@ async def main(bot, msg):
         #file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
         sed = await bot.download_media(msg.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", status, now))
         files = {'file': open(sed, 'rb')}
+        await msg.message.edit_text("`uploading to Anonfiles....`")
         upload = requests.post("https://api.anonfiles.com/upload", files=files)
         text = upload.json()
         Fname = text['data']['file']['metadata']['name']
