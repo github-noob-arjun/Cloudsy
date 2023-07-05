@@ -162,14 +162,20 @@ async def pixmain(bot, msg):
         
         #upload
         await msg.message.edit_text("`uploading to pixeldrain....`")
-        upload = requests.post(
-            "https://pixeldrain.com/api/file",
-            data={"anonymous": True}
-        )
-        return upload.json()
+        try:
+            upload = requests.post(
+                "https://pixeldrain.com/api/file",
+                data={"anonymous": True}
+            )
+        except Exception as error:
+            await msg.message.edit_text(text=f"Error :- `{error}`")    
+            return upload.json()
     
         file_id = upload['id']
-        data = requests.get(f"https://pixeldrain.com/api/file/{file_id}/info")
+        try:
+            data = requests.get(f"https://pixeldrain.com/api/file/{file_id}/info")
+        except Exception as error:
+            await msg.message.edit_text(text=f"Error :- `{error}`")
         Fname = data['name']
         Fsize = data['size']
         link = data['id']
