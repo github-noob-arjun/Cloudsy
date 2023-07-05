@@ -155,9 +155,7 @@ async def media_filghter(bot, update: CallbackQuery):
     
     logs = []
     message = await update.message.edit_text(
-        text="`Processing...`",
-        quote=True,
-        disable_web_page_preview=True
+        text="`Processing...`"
     )
     
     try:
