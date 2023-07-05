@@ -155,13 +155,15 @@ async def pixmain(bot, msg):
     try:
         status = await msg.message.edit_text("Downloading...")
         now = time.time()
-        #file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
+        
+        #Download
         sed = await bot.download_media(msg.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", status, now))
         files = {'file': open(sed, 'rb')}
+        
+        #upload
         await msg.message.edit_text("`uploading to pixeldrain....`")
         upload = requests.post("https://pixeldrain.com/api/file", files=files)
-        file_id = upload["id"]
-        data = requests.get(f"https://pixeldrain.com/api/file/{file_id}/info")
+        data = requests.get(f"https://pixeldrain.com/api/file/{upload["id"]}/info")
         Fname = data['name']
         Fsize = data['size']
         await msg.message.edit_text(
