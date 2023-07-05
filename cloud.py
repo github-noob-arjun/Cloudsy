@@ -90,8 +90,9 @@ async def medias(bot, update):
 async def main(bot, msg):
     try:
         status = await msg.message.edit_text("Downloading...")
-        #file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
-        file = await msg.message.reply_to_message.download()
+        now = time.time()
+        sed = await bot.download_media(msg.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", status, now))
+        file = {'file': open(sed, 'rb')}
         server = requests.get(url="https://api.gofile.io/getServer").json()["data"]["server"]
         upload = requests.post(
             url=f"https://{server}.gofile.io/uploadFile",
