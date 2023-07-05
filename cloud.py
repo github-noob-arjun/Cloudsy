@@ -153,21 +153,16 @@ async def anonmain(bot, msg):
 @Cloudsy.on_callback_query(filters.regex(r"pixel"))
 async def pixmain(bot, msg):
     try:
+        #Download
         status = await msg.message.edit_text("Downloading...")
         now = time.time()
-        
-        #Download
         sed = await bot.download_media(msg.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", status, now))
         #files = {'file': open(sed, 'rb')}
         
         #upload
         await msg.message.edit_text("`uploading to pixeldrain....`")
         try:
-            upload = requests.post(
-                "https://pixeldrain.com/api/file",
-                data={"anonymous": True},
-                files={'file': open(sed, 'rb')}
-            )
+            upload = requests.post("https://pixeldrain.com/api/file", files={'file': open(sed, 'rb')})
         except Exception as error:
             await msg.message.edit_text(text=f"Up Error :- `{error}`")    
             return upload.json()
