@@ -151,7 +151,7 @@ async def anonmain(bot, msg):
         
         
 @Cloudsy.on_callback_query(filters.regex(r"pixel"))
-async def media_filghter(bot, data: CallbackQuery):
+async def media_filghter(bot, update: CallbackQuery):
     
     logs = []
     message = await update.message.reply_text(
