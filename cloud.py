@@ -44,33 +44,11 @@ def time_data(start_time):
 
 
 async def progress(current, total,up_msg, message, start_time):
-
     try:
-        await message.edit(
-            text = f"{up_msg} {current * 100 / total:.1f}% in {time_data(start_time)}"
-                )
+        await message.edit(text = f"{up_msg} {current * 100 / total:.1f}% in {time_data(start_time)}")
     except:
         pass
 
-def uploadFile(file: str):
-    server = requests.get("https://api.gofile.io/getServer").json()["data"]["server"]
-    response = requests.post(
-        url=f"https://{server}.gofile.io/uploadFile",
-        data={
-            "token": None,
-            "folderId": None,
-            "description": None,
-            "password": None,
-            "tags": None,
-            "expire": None
-        },
-        files={"upload_file": open(file, "rb")}
-    ).json()
-    if response["status"] == "ok":
-        return response["data"]
-    elif "error-" in response["status"]:
-        error = response["status"].split("-")[1]
-        raise Exception(error)
 
 
 
@@ -103,86 +81,40 @@ async def medias(bot, update):
         ),
         quote=True
     )
-    
+
+
+
+
+
 @Cloudsy.on_callback_query(filters.regex(r"gofile"))
 async def main(bot, msg):
-    status = await msg.message.edit_text(
-        "Downloading..."
-    )
-    #file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
-    file = await msg.message.reply_to_message.download()
-    server = requests.get(url="https://api.gofile.io/getServer").json()["data"]["server"]
-    upload = requests.post(
-        url=f"https://{server}.gofile.io/uploadFile",
-        files={"upload_file": open(file, "rb")}
-    ).json()
-    link = upload["data"]["downloadPage"]
-    await msg.message.reply_text(
-        f"Here's the link: \n\n`{link}`",
-        reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton("Open Link", url=link),
-                    InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+link)
-                ]
-            ]
-        )
-    )
-    await status.delete()
-    os.remove(file)
-
-#@Cloudsy.on_callback_query(filters.regex(r"gofile"))
-async def filterpix(bot, data: CallbackQuery):
-    message = await data.message.edit_text(
-        text="Processing file"
-    )
     try:
-        # download
-        try:
-            await message.edit_text(
-                text="Downloading file to server",
-                disable_web_page_preview=True
+        status = await msg.message.edit_text("Downloading...")
+        #file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
+        file = await msg.message.reply_to_message.download()
+        server = requests.get(url="https://api.gofile.io/getServer").json()["data"]["server"]
+        upload = requests.post(
+            url=f"https://{server}.gofile.io/uploadFile",
+            files={"upload_file": open(file, "rb")}
+        ).json()
+        link = upload["data"]["downloadPage"]
+        await msg.message.edit_text(
+            f"Here's the link: \n\n`{link}`",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton("Open Link", url=link),
+                     InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+link)]
+                ]
             )
-        except:
-            pass
-        media = await data.message.reply_to_message.download()
-
-
-        try:
-            await message.edit_text(
-                text="Uploading to Gofile",
-                disable_web_page_preview=True
-            )
-        except:
-            pass
-        response = uploadFile(media)
-        try:
-            os.remove(media)
-        except:
-            pass
+        )
     except Exception as error:
-        await message.edit_text(
-            text=f"Error :- `{error}`",
+        await msg.message.edit_text(
+            text=f"Error :- `{error}`"+"\n\n"+'\n'.join(logs),
             disable_web_page_preview=True
         )
         return
-    text = f"**File Name:** `{response['fileName']}`" + "\n"
-    text += f"**Download Page:** `{response['downloadPage']}`" + "\n"
-   # text += f"**Direct Download Link:** `{response['directLink']}`"
-    reply_markup = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(text="Open Link", url=response['directLink']),
-                InlineKeyboardButton(text="Share Link", url=f"https://telegram.me/share/url?url={response['directLink']}")
-            ]
-        ]
-    )
-    await message.edit_text(
-        text=text,
-        reply_markup=reply_markup,
-        disable_web_page_preview=True
-    )
-    
+        os.remove(file)
+
 
 @Cloudsy.on_callback_query(filters.regex(r"pixel"))
 async def media_filghter(bot, data: CallbackQuery):
@@ -279,7 +211,36 @@ async def media_filghter(bot, data: CallbackQuery):
     )
 
 
+
 @Cloudsy.on_callback_query(filters.regex(r"anon"))
+async def main(bot, msg):
+    try:
+        status = await msg.message.edit_text("Downloading...")
+        #file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
+        file = await msg.message.reply_to_message.download()
+        upload = requests.post("https://api.anonfiles.com/upload", files=file)
+        text = upload.json()
+        Fname = text['data']['file']['metadata']['name']
+        Flink = text['data']['file']['url']['full']
+        await msg.message.edit_text(
+            f"Upload Successfully ☑️\n\nFile : {Fname}\n\nHere's the link: `{Flink}`",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton("Open Link", url=Flink),
+                     InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+Flink)]
+                ]
+            )
+        )
+    except Exception as error:
+        await msg.message.edit_text(
+            text=f"Error :- `{error}`"+"\n\n"+'\n'.join(logs),
+            disable_web_page_preview=True
+        )
+        return
+        os.remove(file)
+
+
+#@Cloudsy.on_callback_query(filters.regex(r"anon"))
 async def uplouhad(bot, data: CallbackQuery):
     m = await data.message.edit_text("Downloading file to server")
     now = time.time()
