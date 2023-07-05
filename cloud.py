@@ -131,8 +131,9 @@ async def main(bot, msg):
         text = upload.json()
         Fname = text['data']['file']['metadata']['name']
         Flink = text['data']['file']['url']['full']
+        Fsize = text['data']['file']['metadata']['size']['readable']
         await msg.message.edit_text(
-            f"Upload Successfully ☑️\n\nFile : {Fname}\n\nHere's the link: `{Flink}`",
+            f"Upload Successfully ☑️\n\nFile : {Fname}\n\n💽 Size : {Fsize}\n\nHere's the link: `{Flink}`",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [InlineKeyboardButton("Open Link", url=Flink),
@@ -242,39 +243,6 @@ async def media_filghter(bot, data: CallbackQuery):
         reply_markup=reply_markup,
         disable_web_page_preview=True
     )
-
-
-#@Cloudsy.on_callback_query(filters.regex(r"anon"))
-async def uplouhad(bot, data: CallbackQuery):
-    m = await data.message.edit_text("Downloading file to server")
-    now = time.time()
-    sed = await bot.download_media(
-                data.message.reply_to_message, DOWNLOAD,
-          progress=progress,
-          progress_args=(
-            "ETA : ", 
-            m,
-            now
-            )
-        )
-    try:
-        files = {'file': open(sed, 'rb')}
-        await m.edit("Uploading to Anonfiles")
-        callapi = requests.post("https://api.anonfiles.com/upload", files=files)
-        text = callapi.json()
-        output = f"""
-**File Name:** {text['data']['file']['metadata']['name']}
-**File Size:** {text['data']['file']['metadata']['size']['readable']}
-**Download Link:** `{text['data']['file']['url']['full']}`"""
-        btn = InlineKeyboardMarkup(
-                                [[InlineKeyboardButton("Open Url", url=f"{text['data']['file']['url']['full']}"),
-                                  InlineKeyboardButton("Share Link", url=f"https://telegram.me/share/url?url={text['data']['file']['url']['full']}")
-                                 ]])
-        await m.edit(output, reply_markup=btn)
-        os.remove(sed)
-    except Exception:
-        await m.edit("Process Failed, Maybe Time Out Due To Large File Size!")
-        return
 
 
 Cloudsy.run()
