@@ -234,7 +234,7 @@ async def media_filghter(bot, update: CallbackQuery):
     )
     
     await message.edit_text(
-        text=f"**Upload Successfully ☑️\n\nFile : {data['name']}\n\n💽 Size : {data['size']}\n\nDownload Page : `https://pixeldrain.com/u/{data['id']}`\n\nDirect Download: `https://pixeldrain.com/api/file/{data['id']}`**",
+        text=f"**Upload Successfully ☑️\n\nFile : {data['name']}\n\nDownload Page : `https://pixeldrain.com/u/{data['id']}`\n\nDirect Download: `https://pixeldrain.com/api/file/{data['id']}`**",
         reply_markup=reply_markup,
         disable_web_page_preview=True
     )
