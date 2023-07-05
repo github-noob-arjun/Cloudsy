@@ -151,6 +151,38 @@ async def anonmain(bot, msg):
         
 
 @Cloudsy.on_callback_query(filters.regex(r"pixel"))
+async def pixmain(bot, msg):
+    try:
+        status = await msg.message.edit_text("Downloading...")
+        now = time.time()
+        #file = await msg.download(progress=progress, progress_args=(status, "Downloading..."))
+        sed = await bot.download_media(msg.message.reply_to_message, DOWNLOAD, progress=progress, progress_args=("ETA : ", status, now))
+        files = {'file': open(sed, 'rb')}
+        await msg.message.edit_text("`uploading to pixeldrain....`")
+        upload = requests.post("https://pixeldrain.com/api/file", files=files)
+        file_id = upload["id"]
+        data = requests.get(f"https://pixeldrain.com/api/file/{file_id}/info")
+        Fname = data['name']
+        Flink = f"https://pixeldrain.com/api/file/{data['id']}"
+        Fsize = data['size']
+        await msg.message.edit_text(
+            f"Upload Successfully ☑️\n\nFile : {Fname}\n\n💽 Size : {Fsize}\n\nHere's the link: `{Flink}`",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton("Open Link", url=Flink),
+                     InlineKeyboardButton("Share Link", url="https://t.me/share/url?url="+Flink)]
+                ]
+            )
+        )
+    except Exception as error:
+        await msg.message.edit_text(
+            text=f"Error :- `{error}`",
+            disable_web_page_preview=True
+        )
+        return
+        os.remove(file)
+        
+#@Cloudsy.on_callback_query(filters.regex(r"pixel"))
 async def media_filghter(bot, data: CallbackQuery):
     
     logs = []
