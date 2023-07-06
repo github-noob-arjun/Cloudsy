@@ -1,1 +1,1 @@
-worker: python cloud.py
+worker: python -m cloud 
