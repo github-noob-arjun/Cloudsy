@@ -4,7 +4,7 @@
 
 import os
 import pixeldrain
-from pyrogram import Client, filters, idle
+from pyrogram import Client as Cloudsy, filters, idle
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 import requests
 import sys
@@ -13,13 +13,6 @@ import logging
 import aiohttp
 import asyncio
 from random import randint
-
-Cloudsy = Client(
-    "Cloudsy-Bot",
-    bot_token = "6075983195:AAGMNrva0scU_VFBzP-sve5_vI6qvdl6V24",
-    api_id = 15681435,
-    api_hash = "29021e7d8f6fe5338a45470115567f9e"
-)
 
 DOWNLOAD = "./"
 
@@ -239,4 +232,3 @@ async def media_filghter(bot, update: CallbackQuery):
         disable_web_page_preview=True
     )
 
-Cloudsy.run()
